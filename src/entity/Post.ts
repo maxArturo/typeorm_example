@@ -1,10 +1,4 @@
-import {
-  Column,
-  Entity,
-  JoinTable,
-  ManyToMany,
-  PrimaryGeneratedColumn,
-} from "typeorm"
+import { Column, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn } from "typeorm"
 import { Category } from "./Category"
 
 @Entity()
@@ -18,7 +12,7 @@ export class Post {
   @Column("text")
   text: string
 
-  @ManyToMany((type) => Category)
-  @JoinTable()
-  categories: Category[]
+  @ManyToOne(() => Category, (category) => category.posts, { nullable: true })
+  @JoinColumn()
+  category: Category | null
 }

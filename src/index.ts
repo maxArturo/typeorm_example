@@ -8,17 +8,21 @@ AppDataSource.initialize()
     category1.name = "TypeScript"
     await AppDataSource.manager.save(category1)
 
-    const category2 = new Category()
-    category2.name = "Programming"
-    await AppDataSource.manager.save(category2)
-
     const post = new Post()
     post.title = "TypeScript"
     post.text = `TypeScript is Awesome!`
-    post.categories = [category1, category2]
+    post.category = null
 
     await AppDataSource.manager.save(post)
 
     console.log("Post has been saved: ", post)
+
+    const found = await AppDataSource.getRepository(Post).findOne({})
+
+    // Here we expect TS to tell us this is wrong, since we need to handle the null
+    // but no problems?
+    const foo = found.category.posts
+    
+    console.log("No TS errors somehow: ", foo)
   })
   .catch((error) => console.log("Error: ", error))
